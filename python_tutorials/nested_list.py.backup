@@ -1,0 +1,30 @@
+def get_stdin():
+    n = raw_input()
+    results = [n]
+    for i in range(int(n) * 2):
+        results.append(raw_input())
+    return results
+
+
+def get_grades(user_input):
+    int(user_input.pop(0))
+    results = []
+    while user_input:
+        results.append([user_input.pop(0), float(user_input.pop(0))])
+    return results
+
+
+def get_second_lowest(grade_list):
+    grade_list.sort(key=lambda x: x[1])
+    results = []
+    for student in grade_list:
+        if student[1] == grade_list[1][1]:
+            results.append(student[0])
+    return sorted(results)
+
+
+if __name__ == '__main__':
+    input_list = get_stdin()
+    grades = get_grades(input_list)
+    second_lowest = get_second_lowest(grades)
+    print "\n".join(get_second_lowest(grades))

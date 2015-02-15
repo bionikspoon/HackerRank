@@ -1,0 +1,11 @@
+6
+<feed xml:lang='en'>
+    <title>HackerRank</title>
+    <subtitle lang='en'>Programming challenges</subtitle>
+    <link rel='alternate' type='text/html' href='http://hackerrank.com/'/>
+    <author>
+        <first_name>bionik</first_name>
+        <last_name>spoon</last_name>
+    </author>
+    <updated>2013-12-25T12:00:00</updated>
+</feed>
