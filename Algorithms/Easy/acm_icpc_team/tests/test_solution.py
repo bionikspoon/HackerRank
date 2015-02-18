@@ -2,11 +2,15 @@ from nose.tools import *
 
 cases = []
 case0_in = """
-Hello
-World"""
+4 5
+10101
+11100
+11010
+00101"""
 
 case0_out = """
-Hello World"""
+5
+2"""
 cases.append((case0_in, case0_out))
 
 

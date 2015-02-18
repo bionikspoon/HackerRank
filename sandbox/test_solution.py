@@ -1,25 +1,26 @@
-from nose.tools import *
+import nose.tools as test
+from solution import *
 
 cases = []
 case0_in = """
-Hello
-World"""
+2
+2 3
+3 7"""
 
 case0_out = """
-Hello World"""
+5
+10"""
 cases.append((case0_in, case0_out))
-
 
 
 def test_cases():
     global cases
     for i, (_in, _out) in enumerate(cases):
-        yield check_case, "case %i" % i, _in.strip(), _out.strip()
+        yield check_case, _in.strip(), _out.strip()
 
 
-# noinspection PyUnusedLocal
-def check_case(name, _in, _out):
+def check_case(_in, _out):
     actual = main(_in.split("\n"))
     actual = actual if isinstance(actual, list) else [actual]
     expected = _out.split("\n")
-    assert_equals(actual, expected)
+    test.assert_equal(actual, expected)
