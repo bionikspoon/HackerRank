@@ -11,16 +11,26 @@ import solution
 
 cases = []
 case0_in = """
-4 3
-1 2 3 4
-1 2 3
-13 29 71
-"""
+6
+5 4 4 2 2 8"""
 
 case0_out = """
-13 754 2769 1508
-"""
+6
+4
+2
+1"""
 cases.append((case0_in, case0_out))
+
+case1_in = """
+8
+1 2 3 4 3 3 2 1"""
+
+case1_out = """
+8
+6
+4
+1"""
+cases.append((case1_in, case1_out))
 
 
 class TestSolutionModule(object):
@@ -55,21 +65,23 @@ class TestSolutionModule(object):
 
     @test.timed(5)
     def test_performance(self):
-        n = lambda: random.randint(1, 10 ** 1)
-        m = lambda: random.randint(1, 10 ** 1)
-        b = lambda: [random.randint(1, n) for _ in range(n)]
-        a = lambda: [random.randint(1, 10 ** 5) for _ in range(m)]
-        c = lambda: [random.randint(1, 10 ** 5) for _ in range(m)]
+        t = 1
+        n = (1, 1000)
+        a1 = (1, 1000)
+        case_format = lambda _n, _a1: '%i\n%s' % (_n, _a1)
+        input_format = lambda case: '\n'.join(case)
 
-        line_format = lambda args: ' '.join(map(str, args))
-        input_format = lambda *args: '\n'.join(args)
+        def test_case():
+            _n = random.randint(n[0], n[1])
+            _n = n[1]
+            _a1 = ' '.join(
+                [str(random.randint(a1[0], a1[1])) for _ in xrange(_n)])
+            return case_format(_n, _a1)
 
-        n, m = n(), m()
-        a, b, c = a(), b(), c()
-        test_input = input_format(line_format([n, m]), line_format(b),
-                                  line_format(a), line_format(c))
+        test_input = [test_case() for _ in xrange(t)]
+        test_input = input_format(test_input)
         print test_input
-        test.assert_is_not_none(self.main_with_input(test_input))
+        self.main_with_input(test_input)
 
     @staticmethod
     def print_format(text, tag='', width=70):
@@ -81,7 +93,8 @@ class TestSolutionModule(object):
 
 
 class TestSolutionUnit(unittest.TestCase):
-    pass
+    def test_something(self):
+        test.assert_equal(True, True)
 
 
 if __name__ == '__main__':

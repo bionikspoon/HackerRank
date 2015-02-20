@@ -11,16 +11,38 @@ import solution
 
 cases = []
 case0_in = """
-4 3
-1 2 3 4
+2
+3
 1 2 3
-13 29 71
+4
+1 2 3 3
 """
 
 case0_out = """
-13 754 2769 1508
+NO
+YES
 """
 cases.append((case0_in, case0_out))
+
+case1_in = """
+4
+1
+1
+2
+2 2
+2
+9 10
+3
+1 2 2
+"""
+
+case1_out = """
+YES
+NO
+NO
+NO
+"""
+cases.append((case1_in, case1_out))
 
 
 class TestSolutionModule(object):
@@ -55,21 +77,23 @@ class TestSolutionModule(object):
 
     @test.timed(5)
     def test_performance(self):
-        n = lambda: random.randint(1, 10 ** 1)
-        m = lambda: random.randint(1, 10 ** 1)
-        b = lambda: [random.randint(1, n) for _ in range(n)]
-        a = lambda: [random.randint(1, 10 ** 5) for _ in range(m)]
-        c = lambda: [random.randint(1, 10 ** 5) for _ in range(m)]
+        t = (10, 10)
+        n = (10 ** 5, 10 ** 5)
+        a1 = (1, 2 * 10 ** 4)
+        case_format = lambda _n, _a1: '%i\n%s' % (_n, _a1)
+        input_format = lambda _t, _cases: '%i\n%s' % (_t, '\n'.join(_cases))
 
-        line_format = lambda args: ' '.join(map(str, args))
-        input_format = lambda *args: '\n'.join(args)
+        def test_case():
+            _n = random.randint(n[0], n[1])
+            _a1 = ' '.join(
+                [str(random.randint(a1[0], a1[1])) for _ in xrange(_n)])
+            return case_format(_n, _a1)
 
-        n, m = n(), m()
-        a, b, c = a(), b(), c()
-        test_input = input_format(line_format([n, m]), line_format(b),
-                                  line_format(a), line_format(c))
+        t = random.randint(t[0], t[1])
+        test_input = [test_case() for _ in xrange(t)]
+        test_input = input_format(t, test_input)
         print test_input
-        test.assert_is_not_none(self.main_with_input(test_input))
+        self.main_with_input(test_input)
 
     @staticmethod
     def print_format(text, tag='', width=70):
@@ -81,7 +105,8 @@ class TestSolutionModule(object):
 
 
 class TestSolutionUnit(unittest.TestCase):
-    pass
+    def test_2_and_2_is_false(self):
+        test.assert_equal(solution.has_sum_median([2, 2]), False)
 
 
 if __name__ == '__main__':
