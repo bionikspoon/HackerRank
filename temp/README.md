@@ -6,7 +6,7 @@ Help Sherlock in answering Queries
 
 ##Problem Statement##
 
-Watson gives to Sherlock an array: $A_1, A_2, \cdots, A_N$. He also gives to Sherlock two other arrays: $B_1, B_2, \cdots, B_M$ and $C_1, C_2, \cdots, C_M$.
+Watson gives to Sherlock an array: ![$A_1, A_2, \cdots, A_N$](../assets/image.png). He also gives to Sherlock two other arrays: $B_1, B_2, \cdots, B_M$ and $C_1, C_2, \cdots, C_M$.
 Then Watson asks Sherlock to perform the following program:
 
     for i = 1 to M do
