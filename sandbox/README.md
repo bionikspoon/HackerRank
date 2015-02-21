@@ -1,7 +1,7 @@
 #Sherlock and Queries#
 
 ##Problem Statement##
-Watson gives to Sherlock an array: *A_1, A_2, &#x22EF;, A_N*. He also gives to Sherlock two other arrays: *B_1, B_2, &#x22EF;, B_M* and *C_1, C_2, &#x22EF;, C_M*.   
+Watson gives to Sherlock an array: ***A_1, A_2, &#x22EF;, A_N***. He also gives to Sherlock two other arrays: **B_1, B_2, &#x22EF;, B_M** and *C_1, C_2, &#x22EF;, C_M*.   
 Then Watson asks Sherlock to perform the following program:
 
     for i = 1 to M do
