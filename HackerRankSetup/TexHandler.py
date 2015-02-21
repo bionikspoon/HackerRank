@@ -1,21 +1,40 @@
+import os
 import requests
+import hashlib
 
 
 class TexHandler(object):
-    # api = 'http://chart.apis.google.com/chart?cht=tx&chs=24&chl=%24A_1%2C%20A_2%2C%20%5Ccdots%2C%20A_N%24'
     api = 'http://chart.apis.google.com/chart'
 
-    def __init__(self):
-        tex = '$A_1, A_2, \cdots, A_N$'
-        payload = {'cht': 'tx', 'chs': 20, 'chl': tex}
-        r = requests.get(self.api, params=payload)
-        with open('..\\assets\\image.png', 'wb') as f:
-            f.write(r.content)
+    def __init__(self, _directory='..\\assets\\'):
+        if not os.path.exists(_directory):
+            os.makedirs(_directory)
+        self.directory = _directory
 
-        print r.url
+    def get(self, tex):
+        payload = {'cht': 'tx', 'chs': 20, 'chl': tex}
+        hash_id = hashlib.md5(tex).hexdigest()
+        file_name = '{}{}.{}'.format(self.directory, hash_id, 'png')
+        r = requests.get(self.api, params=payload)
+        with open(file_name, 'wb') as f:
+            f.write(r.content)
+        return '{}.{}'.format(hash_id, 'png')
 
 
 if __name__ == "__main__":
-    TexHandler()
+    from Tkinter import Tk
+    r = Tk()
+    r.withdraw()
+    directory = '..\\assets\\'
+    equation = r.selection_get(selection="CLIPBOARD")
+    chart = TexHandler(directory)
+    image = chart.get(equation)
+    raw_content = 'https://raw.githubusercontent.com/' \
+                  'bionikspoon/HackerRank/master/assets/'
+    md_link = '![{}]({})'.format(equation, raw_content + image)
+    r.clipboard_clear()
+    r.clipboard_append(md_link)
+    print md_link
+    r.destroy()
 
 
