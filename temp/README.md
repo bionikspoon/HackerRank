@@ -46,3 +46,4 @@ $1 \le A[i], C[i] \le 10^5$
 
 	13 754 2769 1508	
 
+[img]http://www.sciweavers.org/tex2img.php?eq=%24A_1%2C%20A_2%2C%20%5Ccdots%2C%20A_N%24&bc=White&fc=Black&im=png&fs=18&ff=modern&edit=0[/img]

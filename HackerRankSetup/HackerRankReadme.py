@@ -18,7 +18,7 @@ class HackerRankReadme(object):
         self.url = url
         self.rest_endpoint = self.get_rest_endpoint(url)
         self.readme_file = readme_file
-        with open('tests/mock_response.json') as response:
+        with open('tests/mock_hackerrank_response.json') as response:
             self.model = json.load(response)['model']
 
         self.source = self.build_source()

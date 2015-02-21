@@ -12,3 +12,5 @@ int:n int:t
 list:n:w
 feed:t:int:i int:j
 """
+
+ap = 'http://chart.apis.google.com/chart?cht=tx&chl=A_1,%20A_2,%20\cdots,%20A_N'
