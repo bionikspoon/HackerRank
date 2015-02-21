@@ -6,7 +6,7 @@ Help Sherlock in answering Queries
 
 ##Problem Statement##
 
-Watson gives to Sherlock an array: $A_1, A_2, \cdots, A_N$. He also gives to Sherlock two other arrays: $B_1, B_2, \cdots, B_M$ and $C_1, C_2, \cdots, C_M$.
+Watson gives to Sherlock an array: ![$A_1, A_2, \cdots, A_N$](../assets/image.png). He also gives to Sherlock two other arrays: $B_1, B_2, \cdots, B_M$ and $C_1, C_2, \cdots, C_M$.
 Then Watson asks Sherlock to perform the following program:
 
     for i = 1 to M do
@@ -45,5 +45,3 @@ $1 \le A[i], C[i] \le 10^5$
 
 
 	13 754 2769 1508	
-
-[img]http://www.sciweavers.org/tex2img.php?eq=%24A_1%2C%20A_2%2C%20%5Ccdots%2C%20A_N%24&bc=White&fc=Black&im=png&fs=18&ff=modern&edit=0[/img]
