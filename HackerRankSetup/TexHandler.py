@@ -23,10 +23,12 @@ class TexHandler(object):
 
 if __name__ == "__main__":
     from Tkinter import Tk
+
     r = Tk()
     r.withdraw()
     directory = '..\\assets\\'
-    equation = r.selection_get(selection="CLIPBOARD")
+    # equation = r.selection_get(selection="CLIPBOARD")
+    equation = '$A_1, A_2, \cdots, A_N$'
     chart = TexHandler(directory)
     image = chart.get(equation)
     raw_content = 'https://raw.githubusercontent.com/' \

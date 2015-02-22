@@ -1,8 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import codecs
 import os
-# import urllib2
-# import requests
-import json
+from string import maketrans
+import requests
 import re
+from HackerRankSetup.TexHandler import TexHandler
 
 
 class HackerRankReadme(object):
@@ -11,67 +14,109 @@ class HackerRankReadme(object):
     hackerrank_logo = 'https://www.hackerrank.com/' \
                       'assets/brand/typemark_60x200.png'
 
-    def __init__(self, url, directory='../temp/', readme_file='README.md'):
-        self._directory = None
-        self.directory = directory
+    def __init__(self, url, directory='../temp/', readme_file_name='README.md'):
+        self._directory = directory
 
         self.url = url
         self.rest_endpoint = self.get_rest_endpoint(url)
-        self.readme_file = readme_file
-        with open('tests/mock_hackerrank_response.json') as response:
-            self.model = json.load(response)['model']
-
-        self.source = self.build_source()
-        self.readme = self.build_readme()
-
-        self.source_file = self.get_source_file_name()
-
-
-    def run(self):
-        with open(self.directory + self.source_file, 'w') as f:
-            f.write(self.source)
-        with open(self.directory + self.readme_file, 'w') as f:
-            f.write(self.readme)
-
-    def get_source_file_name(self):
-        return '{}.md'.format(self.model['slug'])
-
-    def build_readme(self):
-        readme = self.source.replace('**', '###')
-        return readme
-
-    def build_source(self):
-        logo = '![{}]({})'.format('HackerRank', self.hackerrank_logo)
-        name = '#{}#'.format(self.model['name'].strip())
-        url_crumb = '{} \ {} \ {} \ {}'.format('HackerRank',
-                                               self.model['track'][
-                                                   'track_name'],
-                                               self.model['track']['name'],
-                                               self.model['name'])
-        link = '[{}]({})'.format(url_crumb, self.url)
-        preview = '\n{}'.format(self.model['preview'])
-        body = '\n##{}##\n\n{}'.format('Problem Statement', self.model['body'])
-
-        source = '\n'.join([logo, name, link, preview, body])
-        source = re.sub(r' +$', '', source, flags=re.M)
-        source = source.replace('**\n', '**\n\n')
-        return source
+        self.readme_file_name = readme_file_name
+        self._source = None
+        self._model = None
+        self._readme = None
+        self._source_file_name = None
 
     @property
     def directory(self):
+        if not os.path.exists(self._directory):
+            os.makedirs(self._directory)
         return self._directory
 
-    @directory.setter
-    def directory(self, value):
-        if not os.path.exists(value):
-            os.makedirs(value)
-        self._directory = value
+    @property
+    def source(self):
+        self._source = self._source if self._source else self.build_source()
+        return self._source
+
+    @property
+    def model(self):
+        self._model = self._model if self._model else self.get_model()
+        return self._model
+
+    @property
+    def readme(self):
+        self._readme = self._readme if self._readme else self.build_readme()
+        return self._readme
 
     def get_rest_endpoint(self, from_url):
         url_slug = re.search(r'/([a-z1-9-]+)/?$', from_url).group(1)
         return self.rest_base + url_slug
 
+    @property
+    def source_file_name(self):
+        self._source_file_name = self._source_file_name \
+            if self._source_file_name else '{}.md'.format(self.model['slug'])
+        return self._source_file_name
+
+    def run(self):
+        with codecs.open(self.directory + self.source_file_name, 'w',
+                         encoding='utf8') as f:
+            f.write(self.source)
+        with codecs.open(self.directory + self.readme_file_name, 'w',
+                         encoding='utf8') as f:
+            f.write(self.readme)
+
+    def get_model(self):
+        r = requests.get(self.rest_endpoint)
+        return r.json()['model']
+
+    def build_readme(self):
+        tex_api = TexHandler()
+        tex_api.directory = '../assets/'
+        footnote = {}
+
+        def register_tex(match):
+            match = match.group()
+            tex_path = tex_api.get(match)
+            match = match.replace('[', '').replace(']','')
+            footnote[match] = tex_path
+            return '![{}]'.format(match)
+
+        readme = self.source
+        h3 = re.compile(ur'^\*\*([\w ?]+)\*\*$', re.M)
+        readme = h3.sub(ur'###\1', readme)
+        tex = re.compile(ur'\$[^$]+\$')
+        readme = tex.sub(register_tex, readme)
+        for k, v in footnote.iteritems():
+            readme += '\n' + r'[{}]:{}{}'.format(k, tex_api.directory, v)
+        print footnote
+        return readme
+
+    def build_source(self):
+        model = self.model
+        footnote = {'HackerRank': self.hackerrank_logo}
+        logo = '![{0}]'.format('HackerRank')
+        name = '#{}'.format(model['name'].strip())
+        url_crumb = '{} \ {} \ {} \ {}'.format('HackerRank',
+                                               model['track']['track_name'],
+                                               model['track']['name'],
+                                               model['name'])
+        link = '[{}]({})'.format(url_crumb, self.url)
+        preview = '\n{}'.format(model['preview'])
+        body = u'\n##{}\n\n{}' \
+            .format('Problem Statement',
+                    model['_data']['problem_statement'].strip())
+        footnote = '\n[{}]:{}'.format('HackerRank', footnote['HackerRank'])
+
+        source = u'\n'.join([logo, name, link, preview, body, footnote])
+
+        source = re.compile(r' +$', re.M).sub('', source)
+        source = re.compile(r'(\*\*)$', re.M).sub('**\n', source)
+        return source
+
+    def __str__(self):
+        return self.readme
+
 
 if __name__ == "__main__":
-    _url = 'https://www.hackerrank.com/challenges/sherlock-and-queries'
-    HackerRankReadme(_url).run()
+    _directory = '../temp/'
+    _url = raw_input('>>> ')
+    print str(HackerRankReadme(_url, directory=_directory).run())
