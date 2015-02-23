@@ -14,11 +14,11 @@ import HackerRankSetup.HackerRankReadme as HRHR
 
 class TestHackerRankReadme(unittest.TestCase):
     hackerrank_response = cPickle.load(
-        open('./tests/resources/hackerrank_response.p', 'rb'))
+        open('./tests/test_assets/hackerrank_response.p', 'rb'))
     test_url = ('https://www.hackerrank.com/'
                 'challenges/sherlock-and-queries')
     temp_dir = None
-    tex_response = os.path.normpath('./tests/resources/mock_tex_response.json')
+    tex_response = os.path.normpath('./tests/test_assets/mock_tex_response.json')
 
 
     @classmethod
@@ -74,19 +74,22 @@ class TestHackerRankReadme(unittest.TestCase):
                            'sherlock-and-queries.md')
 
     def test_build_source(self):
-        with open('./tests/resources/sherlock-and-queries.md') as source:
-            print self.handler.build_source()
-            test.assert_equals(self.handler.build_source(), source.read())
+        with open('./tests/test_assets/sherlock-and-queries.md') as source_file:
+            source = self.handler.build_source()
+            print source
+            test.assert_equals(source, source_file.read())
 
     def test_build_readme(self):
-        with open('./tests/resources/README.md') as readme:
-            test.assert_equals(self.handler.build_readme(), readme.read())
+        with open('./tests/test_assets/README.md') as readme_file:
+            readme = self.handler.build_readme()
+            print readme
+            test.assert_equals(readme, readme_file.read())
 
     def test_run(self):
         self.handler.run()
         expected_source = os.path.normpath(
-            './tests/resources/sherlock-and-queries.md')
-        expected_readme = os.path.normpath('./tests/resources/README.md')
+            './tests/test_assets/sherlock-and-queries.md')
+        expected_readme = os.path.normpath('./tests/test_assets/README.md')
         test_source = os.path.join(self.temp_dir, 'sherlock-and-queries.md')
         test_readme = os.path.join(self.temp_dir, 'README.md')
 

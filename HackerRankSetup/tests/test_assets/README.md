@@ -1,5 +1,7 @@
 ![HackerRank]
+
 #Sherlock and Queries
+
 [HackerRank \ Algorithms \ Implementation \ Sherlock and Queries](https://www.hackerrank.com/challenges/sherlock-and-queries)
 
 Help Sherlock in answering Queries
@@ -7,6 +9,7 @@ Help Sherlock in answering Queries
 ##Problem Statement
 
 Watson gives to Sherlock an array: ![$A_1, A_2, \cdots, A_N$]. He also gives to Sherlock two other arrays: ![$B_1, B_2, \cdots, B_M$] and ![$C_1, C_2, \cdots, C_M$].
+
 Then Watson asks Sherlock to perform the following program:
 
     for i = 1 to M do
@@ -30,21 +33,21 @@ Print ![$N$] integers, the elements of array ![$A$] after performing the program
 ###Constraints
 
 ![$1 \le N, M \le 10^5$]
+
 ![$1 \le Bi \le N$]
+
 ![$1 \le Ai, Ci \le 10^5$]
 
 ###Sample Input
 
-
-	4 3
-	1 2 3 4
-	1 2 3
-	13 29 71
+    4 3
+    1 2 3 4
+    1 2 3
+    13 29 71
 
 ###Sample Output
 
-
-	13 754 2769 1508
+    13 754 2769 1508
 
 [HackerRank]:https://www.hackerrank.com/assets/brand/typemark_60x200.png
 [$A$]:../assets/53d147e7f3fe6e47ee05b88b166bd3f6.png

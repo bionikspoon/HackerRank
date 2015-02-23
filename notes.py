@@ -12,5 +12,10 @@ int:n int:t
 list:n:w
 feed:t:int:i int:j
 """
+template_format2 = """
+n(2, 10**5) t(1, 10**3)
+n[w(1, 3)]
+t{i(1, n-2) j(n-1, n)}
+"""
 
 ap = 'http://chart.apis.google.com/chart?cht=tx&chl=A_1,%20A_2,%20\cdots,%20A_N'

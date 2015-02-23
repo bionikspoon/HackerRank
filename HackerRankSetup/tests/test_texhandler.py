@@ -11,7 +11,7 @@ import HackerRankSetup.TexHandler as HRTH
 
 class TestTexHandler(unittest.TestCase):
     temp_dir = None
-    tex_response = cPickle.load(open('./tests/resources/tex_response.p', 'rb'))
+    tex_response = cPickle.load(open('./tests/test_assets/tex_response.p', 'rb'))
     sample_tex = '$B_1, B_2, \cdots, B_M$'
 
 
@@ -19,7 +19,7 @@ class TestTexHandler(unittest.TestCase):
     def setUpClass(cls):
         tempfile.tempdir = './tests/.tmp/'
         cls.temp_dir = tempfile.mkdtemp()
-        cls.temp_assets = cls.temp_dir + '/resources/'
+        cls.temp_assets = cls.temp_dir + '/test_assets/'
         os.mkdir(cls.temp_assets)
 
     @classmethod
@@ -52,7 +52,7 @@ class TestTexHandler(unittest.TestCase):
 
     def test_accurately_renders_png(self):
         actual = self.temp_assets + self.tex.get(self.sample_tex)
-        expected = './tests/resources/931a66e3d5b402ced398785c46df78e4.png'
+        expected = './tests/test_assets/931a66e3d5b402ced398785c46df78e4.png'
         test.assert_true(filecmp.cmp(actual, expected))
 
 

@@ -86,6 +86,9 @@ class HackerRankReadme(object):
         readme = self.source
         h3 = re.compile(ur'^\*\*([\w ?]+)\*\*$', re.M)
         readme = h3.sub(ur'###\1', readme)
+        newline = (ur'(```)([^`]*?)(?(2)(```))|(?:(?:\n?(?: {4,})+.*\n)+\n?)|(?P<space>(?<!\n)\n(?!\n))')
+        repl = lambda x: "\n\n" if x.group('space') else x.group()
+        readme = re.compile(newline).sub(repl, readme)
         tex = re.compile(ur'\$[^$]+\$')
         readme = tex.sub(register_tex, readme)
         for k, v in footnote.iteritems():
@@ -102,15 +105,16 @@ class HackerRankReadme(object):
                                                model['track']['name'],
                                                model['name'])
         link = '[{}]({})'.format(url_crumb, self.url)
-        preview = '\n{}'.format(model['preview'])
-        body = (u'\n##{}\n\n{}'.format('Problem Statement', model['_data'][
+        preview = '{}'.format(model['preview'])
+        body = (u'\n##{}\n{}'.format('Problem Statement', model['_data'][
             'problem_statement'].strip()))
         footnote = '\n[{}]:{}'.format('HackerRank', footnote['HackerRank'])
 
         source = u'\n'.join([logo, name, link, preview, body, footnote])
 
         source = re.compile(r' +$', re.M).sub('', source)
-        source = re.compile(r'(\*\*)$', re.M).sub('**\n', source)
+        source = re.compile(ur'\t', re.U).sub(u'    ', source)
+        # source = re.compile(r'(\*\*)$', re.M).sub('**\n', source)
         return source
 
     def __str__(self):
@@ -119,6 +123,6 @@ class HackerRankReadme(object):
 
 if __name__ == "__main__":
     _directory = '../proof_of_concept/'
-    _assets = '../resources/'
+    _assets = '../test_assets/'
     _url = raw_input('>>> ')
     print HackerRankReadme(_url, directory=_directory, assets=_assets).run()

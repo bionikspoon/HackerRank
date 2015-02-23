@@ -5,7 +5,7 @@ import hashlib
 class TexHandler(object):
     api = 'http://chart.apis.google.com/chart'
 
-    def __init__(self, assets='../resources/'):
+    def __init__(self, assets='../test_assets/'):
         self.assets = assets
 
     def get(self, tex):
@@ -19,7 +19,7 @@ class TexHandler(object):
 
 
 if __name__ == "__main__":
-    _assets = '../resources/'
+    _assets = '../test_assets/'
     # _tex = raw_input('>>> ')
     _tex = '$B_1, B_2, \cdots, B_M$'
     tex_api = TexHandler(assets=_assets)
