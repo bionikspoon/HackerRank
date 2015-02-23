@@ -86,7 +86,10 @@ class HackerRankReadme(object):
         readme = self.source
         h3 = re.compile(ur'^\*\*([\w ?]+)\*\*$', re.M)
         readme = h3.sub(ur'###\1', readme)
-        newline = (ur'(```)([^`]*?)(?(2)(```))|(?:(?:\n?(?: {4,})+.*\n)+\n?)|(?P<space>(?<!\n)\n(?!\n))')
+        newline = (
+            ur'(```)([^`]*?)(?(2)(```))'
+            ur'|(?:(?:\n?(?: {4,})+.*\n)+\n?)'
+            ur'|(?P<space>(?<!\n)\n(?!\n))')
         repl = lambda x: "\n\n" if x.group('space') else x.group()
         readme = re.compile(newline).sub(repl, readme)
         tex = re.compile(ur'\$[^$]+\$')
@@ -114,7 +117,6 @@ class HackerRankReadme(object):
 
         source = re.compile(r' +$', re.M).sub('', source)
         source = re.compile(ur'\t', re.U).sub(u'    ', source)
-        # source = re.compile(r'(\*\*)$', re.M).sub('**\n', source)
         return source
 
     def __str__(self):
