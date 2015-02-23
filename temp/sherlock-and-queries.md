@@ -1,10 +1,10 @@
-![HackerRank](https://www.hackerrank.com/assets/brand/typemark_60x200.png)
-#Sherlock and Queries#
+![HackerRank]
+#Sherlock and Queries
 [HackerRank \ Algorithms \ Implementation \ Sherlock and Queries](https://www.hackerrank.com/challenges/sherlock-and-queries)
 
 Help Sherlock in answering Queries
 
-##Problem Statement##
+##Problem Statement
 
 Watson gives to Sherlock an array: $A_1, A_2, \cdots, A_N$. He also gives to Sherlock two other arrays: $B_1, B_2, \cdots, B_M$ and $C_1, C_2, \cdots, C_M$.
 Then Watson asks Sherlock to perform the following program:
@@ -17,7 +17,7 @@ Then Watson asks Sherlock to perform the following program:
         end do
     end do
 
-Can you help Sherlock and tell him the resulting array $A$? You should print all the array elements modulo $(10^9 + 7)$.
+This code needs to be optimised. Can you help Sherlock and tell him the resulting array $A$? You should print all the array elements modulo $(10^9 + 7)$.
 
 **Input Format**
 
@@ -44,5 +44,6 @@ $1 \le A[i], C[i] \le 10^5$
 **Sample Output**
 
 
-	13 754 2769 1508	
+	13 754 2769 1508
 
+[HackerRank]:https://www.hackerrank.com/assets/brand/typemark_60x200.png

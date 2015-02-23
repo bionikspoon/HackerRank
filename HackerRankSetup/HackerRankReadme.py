@@ -2,20 +2,21 @@
 # -*- coding: utf-8 -*-
 import codecs
 import os
-from string import maketrans
 import requests
 import re
 from HackerRankSetup.TexHandler import TexHandler
 
 
 class HackerRankReadme(object):
-    rest_base = 'https://www.hackerrank.com' \
-                '/rest/contests/master/challenges/'
-    hackerrank_logo = 'https://www.hackerrank.com/' \
-                      'assets/brand/typemark_60x200.png'
+    rest_base = (
+        'https://www.hackerrank.com/rest/contests/master/challenges/')
+    hackerrank_logo = (
+        'https://www.hackerrank.com/assets/brand/typemark_60x200.png')
 
-    def __init__(self, url, directory='../temp/', readme_file_name='README.md'):
-        self._directory = directory
+    def __init__(self, url, directory='../workspace/', assets='../assets/',
+                 readme_file_name='README.md'):
+        self.assets = assets
+        self._directory = os.path.normpath(directory)
 
         self.url = url
         self.rest_endpoint = self.get_rest_endpoint(url)
@@ -52,31 +53,33 @@ class HackerRankReadme(object):
 
     @property
     def source_file_name(self):
-        self._source_file_name = self._source_file_name \
-            if self._source_file_name else '{}.md'.format(self.model['slug'])
+        self._source_file_name = (
+            self._source_file_name if self._source_file_name else '{}.md'.format(
+                self.model['slug']))
         return self._source_file_name
 
     def run(self):
-        with codecs.open(self.directory + self.source_file_name, 'w',
-                         encoding='utf8') as f:
+        with codecs.open(os.path.join(self.directory, self.source_file_name),
+                         'w', encoding='utf8') as f:
             f.write(self.source)
-        with codecs.open(self.directory + self.readme_file_name, 'w',
-                         encoding='utf8') as f:
+        with codecs.open(os.path.join(self.directory, self.readme_file_name),
+                         'w', encoding='utf8') as f:
             f.write(self.readme)
+        return self
 
     def get_model(self):
-        r = requests.get(self.rest_endpoint)
-        return r.json()['model']
+        response = requests.get(self.rest_endpoint)
+        return response.json()['model']
 
     def build_readme(self):
         tex_api = TexHandler()
-        tex_api.directory = '../assets/'
+        tex_api.assets = self.assets
         footnote = {}
 
         def register_tex(match):
             match = match.group()
             tex_path = tex_api.get(match)
-            match = match.replace('[', '').replace(']','')
+            match = match.replace('[', '').replace(']', '')
             footnote[match] = tex_path
             return '![{}]'.format(match)
 
@@ -86,8 +89,7 @@ class HackerRankReadme(object):
         tex = re.compile(ur'\$[^$]+\$')
         readme = tex.sub(register_tex, readme)
         for k, v in footnote.iteritems():
-            readme += '\n' + r'[{}]:{}{}'.format(k, tex_api.directory, v)
-        print footnote
+            readme += '\n' + r'[{}]:{}{}'.format(k, self.assets, v)
         return readme
 
     def build_source(self):
@@ -101,9 +103,8 @@ class HackerRankReadme(object):
                                                model['name'])
         link = '[{}]({})'.format(url_crumb, self.url)
         preview = '\n{}'.format(model['preview'])
-        body = u'\n##{}\n\n{}' \
-            .format('Problem Statement',
-                    model['_data']['problem_statement'].strip())
+        body = (u'\n##{}\n\n{}'.format('Problem Statement', model['_data'][
+            'problem_statement'].strip()))
         footnote = '\n[{}]:{}'.format('HackerRank', footnote['HackerRank'])
 
         source = u'\n'.join([logo, name, link, preview, body, footnote])
@@ -113,10 +114,11 @@ class HackerRankReadme(object):
         return source
 
     def __str__(self):
-        return self.readme
+        return self.readme.encode('utf-8')
 
 
 if __name__ == "__main__":
     _directory = '../temp/'
+    _assets = '../resources/'
     _url = raw_input('>>> ')
-    print str(HackerRankReadme(_url, directory=_directory).run())
+    print HackerRankReadme(_url, directory=_directory, assets=_assets).run()
