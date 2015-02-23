@@ -118,7 +118,7 @@ class HackerRankReadme(object):
 
 
 if __name__ == "__main__":
-    _directory = '../temp/'
+    _directory = '../proof_of_concept/'
     _assets = '../resources/'
     _url = raw_input('>>> ')
     print HackerRankReadme(_url, directory=_directory, assets=_assets).run()
