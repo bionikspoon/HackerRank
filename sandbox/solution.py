@@ -1,14 +1,19 @@
-def main():
-    (n, m) = map(int, raw_input().split(' '))
-    a = map(int, raw_input().split(' '))
-    b = map(int, raw_input().split(' '))
-    c = map(int, raw_input().split(' '))
+def insertion_sort(l):
+    for i in xrange(1, len(l)):
+        key = l[i]
+        if key < l[i-1]:
+            l[i] = l[i-1]
+            l[i] = key
+        print l
 
-    for i in range(10**9+7):
-        for j in range(n):
-            if j % b[i] == 0:
-                a[j] *= c[i]
-    print ' '.join(map(str, a))
+
+
+def main():
+    _ = input()
+    ar = [int(i) for i in raw_input().strip().split()]
+    insertion_sort(ar)
+    print " ".join(map(str, ar))
+    pass
 
 
 if __name__ == "__main__":

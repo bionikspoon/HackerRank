@@ -13,30 +13,14 @@ import solution
 
 cases = []
 case0_in = """
+4
 6
-1 4 3 5 6 2
+1 4 5 7 9 12
 """
 
 case0_out = """
-1 4 3 5 6 2
-1 3 4 5 6 2
-1 3 4 5 6 2
-1 3 4 5 6 2
-1 2 3 4 5 6
+1
 """
-case1_in = """
-4
-4 3 2 1
-"""
-
-case1_out = """
-4 3 2 1
-3 4 3 2
-2 3 4 3
-1 2 3 4
-"""
-cases.append((case1_in, case1_out))
-
 cases.append((case0_in, case0_out))
 
 
@@ -72,9 +56,11 @@ class TestSolutionModule(object):
 
     @test.timed(5)
     def test_performance(self):
-        n = random.randint(1 ** 3, 1 ** 3)
-        an = [str(random.randint(-1 * 1 ** 4, 1 ** 4)) for _ in xrange(n)]
-        test_input = "{:d}\n{}".format(n, ' '.join(an))
+        v = random.randint(-1000, 1000)
+        n = random.randint(1000,1000)
+        an = [str(random.randint(1, 1000)) for _ in xrange(n)]
+        an.append(str(v))
+        test_input = "{:d}\n{:d}\n{}".format(v, n, ' '.join(an))
 
         print test_input
         test.assert_is_not_none(self.main_with_input(test_input))
@@ -84,12 +70,11 @@ class TestSolutionModule(object):
         if tag == 'ACTUAL':
             print '\n'
         print '{:><{}}'.format(tag, width)
-        print(text)
+        pprint(text)
         print '{:<>{}}'.format(tag, width)
 
 
 class TestSolutionUnit(unittest.TestCase):
-    @test.nottest
     def test_something(self):
         test.assert_equal(False, False)
 

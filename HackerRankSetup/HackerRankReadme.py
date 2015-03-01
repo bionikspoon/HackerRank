@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import codecs
-import os
+import os.path
+import urllib
 import requests
 import re
 from HackerRankSetup.TexHandler import TexHandler
@@ -13,10 +14,11 @@ class HackerRankReadme(object):
     hackerrank_logo = (
         'https://www.hackerrank.com/assets/brand/typemark_60x200.png')
 
-    def __init__(self, url, directory='../workspace/', assets='../assets/',
-                 readme_file_name='README.md'):
-        self.assets = assets
-        self._directory = os.path.normpath(directory)
+    def __init__(self, url, root='./', workspace='../workspace/',
+                 assets='../assets/', readme_file_name='README.md'):
+        self.root = os.path.abspath(root)
+        self.assets = os.path.relpath(assets, self.root)
+        self._workspace = os.path.relpath(workspace, self.root)
 
         self.url = url
         self.rest_endpoint = self.get_rest_endpoint(url)
@@ -28,9 +30,9 @@ class HackerRankReadme(object):
 
     @property
     def directory(self):
-        if not os.path.exists(self._directory):
-            os.makedirs(self._directory)
-        return self._directory
+        if not os.path.exists(self._workspace):
+            os.makedirs(self._workspace)
+        return self._workspace
 
     @property
     def source(self):
@@ -54,8 +56,8 @@ class HackerRankReadme(object):
     @property
     def source_file_name(self):
         self._source_file_name = (
-            self._source_file_name if self._source_file_name else '{}.md'.format(
-                self.model['slug']))
+            self._source_file_name if self._source_file_name
+            else '{}.md'.format(self.model['slug']))
         return self._source_file_name
 
     def run(self):
@@ -95,7 +97,8 @@ class HackerRankReadme(object):
         tex = re.compile(ur'\$[^$]+\$')
         readme = tex.sub(register_tex, readme)
         for k, v in footnote.iteritems():
-            readme += '\n' + r'[{}]:{}{}'.format(k, self.assets, v)
+            link = urllib.pathname2url(os.path.join(self.assets, v))
+            readme += '\n' + r'[{}]:{}'.format(k, link)
         return readme
 
     def build_source(self):
@@ -127,4 +130,4 @@ if __name__ == "__main__":
     _directory = '../proof_of_concept/'
     _assets = '../test_assets/'
     _url = raw_input('>>> ')
-    print HackerRankReadme(_url, directory=_directory, assets=_assets).run()
+    print HackerRankReadme(_url, workspace=_directory, assets=_assets).run()

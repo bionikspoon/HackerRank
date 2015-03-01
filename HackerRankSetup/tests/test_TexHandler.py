@@ -6,14 +6,14 @@ import cPickle
 import mock
 import nose.tools as test
 import shutil
-import HackerRankSetup.TexHandler as HRTH
+import HackerRankSetup.TexHandler as HRTexHandler
 
 
 class TestTexHandler(unittest.TestCase):
     temp_dir = None
-    tex_response = cPickle.load(open('./tests/test_assets/tex_response.p', 'rb'))
+    tex_response = cPickle.load(
+        open('./tests/test_assets/tex_response.p', 'rb'))
     sample_tex = '$B_1, B_2, \cdots, B_M$'
-
 
     @classmethod
     def setUpClass(cls):
@@ -27,21 +27,20 @@ class TestTexHandler(unittest.TestCase):
         if os.path.exists(cls.temp_dir):
             shutil.rmtree(cls.temp_dir)
 
-
     def setUp(self):
         patcher = mock.patch('HackerRankSetup.TexHandler.requests')
         self.addCleanup(patcher.stop)
         self.mock_requests = patcher.start()
         self.mock_requests.get.return_value = self.tex_response
-        assert HRTH.requests is self.mock_requests
+        assert HRTexHandler.requests is self.mock_requests
 
-        self.tex = HRTH.TexHandler(assets=self.temp_assets)
+        self.tex = HRTexHandler.TexHandler(assets=self.temp_assets)
 
     def tearDown(self):
         pass
 
     def test_requests_properly_mocked(self):
-        test.assert_equals(self.mock_requests, HRTH.requests)
+        test.assert_equals(self.mock_requests, HRTexHandler.requests)
 
     def test_texhandler_initializes_properly(self):
         test.assert_equals(self.tex.assets, self.temp_assets)
