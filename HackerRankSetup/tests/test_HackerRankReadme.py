@@ -1,15 +1,14 @@
+# coding=utf-8
 import difflib
-import os.path
 import tempfile
 import unittest
 import json
 import cPickle
-
-import mock
-
-import nose.tools as test
 import shutil
 
+import os.path
+import mock
+import nose.tools as test
 import HackerRankSetup.HackerRankReadme as HRReadme
 
 
@@ -85,7 +84,6 @@ class TestHackerRankReadme(unittest.TestCase):
             test.assert_equals(source, expected, self.diff(source, expected))
 
     def test_build_readme(self):
-
         with open(self.test_assets('README.md')) as readme_file:
             readme = self.handler.build_readme()
             # print readme

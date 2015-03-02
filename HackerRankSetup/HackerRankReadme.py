@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import urllib
+
 import codecs
 import os.path
-import urllib
 import requests
 import re
 from HackerRankSetup.TexHandler import TexHandler

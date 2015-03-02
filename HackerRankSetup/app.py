@@ -1,5 +1,8 @@
+# coding=utf-8
 import ConfigParser
+
 import os
+
 
 config = ConfigParser.SafeConfigParser()
 config.read('config.cfg')

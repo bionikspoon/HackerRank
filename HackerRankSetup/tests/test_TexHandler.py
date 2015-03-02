@@ -1,11 +1,13 @@
+# coding=utf-8
 import filecmp
-import os
 import tempfile
 import unittest
 import cPickle
+import shutil
+
+import os
 import mock
 import nose.tools as test
-import shutil
 import HackerRankSetup.TexHandler as HRTexHandler
 
 

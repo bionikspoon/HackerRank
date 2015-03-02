@@ -1,5 +1,7 @@
-import requests
+# coding=utf-8
 import hashlib
+
+import requests
 
 
 class TexHandler(object):
@@ -24,5 +26,3 @@ if __name__ == "__main__":
     _tex = '$B_1, B_2, \cdots, B_M$'
     tex_api = TexHandler(assets=_assets)
     print tex_api.get(_tex)
-
-
