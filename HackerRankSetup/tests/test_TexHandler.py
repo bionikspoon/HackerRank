@@ -4,11 +4,13 @@ import tempfile
 import unittest
 import cPickle
 import shutil
-
 import os
+
 import mock
 import nose.tools as test
+
 import HackerRankSetup.TexHandler as HRTexHandler
+
 
 root_directory = os.path.realpath(os.path.expanduser('~/code/HackerRank'))
 
@@ -62,7 +64,7 @@ class TestTexHandler(unittest.TestCase):
                            '931a66e3d5b402ced398785c46df78e4.png')
 
     def test_accurately_renders_png(self):
-        actual = os.path.join(self.temp_assets,self.tex.get(self.sample_tex))
+        actual = os.path.join(self.temp_assets, self.tex.get(self.sample_tex))
         expected = self.test_assets('931a66e3d5b402ced398785c46df78e4.png')
         test.assert_true(filecmp.cmp(actual, expected))
 

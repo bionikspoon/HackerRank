@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
+# coding=utf-8
 import urllib
-
 import codecs
 import os.path
-import requests
 import re
+
+import requests
+
 from HackerRankSetup.TexHandler import TexHandler
 
 

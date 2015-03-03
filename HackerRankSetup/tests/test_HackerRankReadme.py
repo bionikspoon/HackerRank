@@ -5,11 +5,13 @@ import unittest
 import json
 import cPickle
 import shutil
-
 import os.path
+
 import mock
 import nose.tools as test
+
 import HackerRankSetup.HackerRankReadme as HRReadme
+
 
 root_directory = os.path.realpath(os.path.expanduser('~/code/HackerRank'))
 
