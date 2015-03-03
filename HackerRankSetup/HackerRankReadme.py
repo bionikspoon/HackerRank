@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import urllib
 
@@ -17,9 +16,9 @@ class HackerRankReadme(object):
 
     def __init__(self, url, root='./', workspace='../workspace/',
                  assets='../assets/', readme_file_name='README.md'):
-        self.root = os.path.abspath(root)
-        self.assets = os.path.relpath(assets, self.root)
-        self._workspace = os.path.relpath(workspace, self.root)
+        self.root = os.path.realpath(root)
+        self.assets = os.path.realpath(assets)
+        self._workspace = os.path.realpath(workspace)
 
         self.url = url
         self.rest_endpoint = self.get_rest_endpoint(url)
@@ -77,6 +76,7 @@ class HackerRankReadme(object):
     def build_readme(self):
         tex_api = TexHandler()
         tex_api.assets = self.assets
+        rel_assets = os.path.relpath(self.assets, self._workspace)
         footnote = {}
 
         def register_tex(match):
@@ -98,7 +98,7 @@ class HackerRankReadme(object):
         tex = re.compile(ur'\$[^$]+\$')
         readme = tex.sub(register_tex, readme)
         for k, v in footnote.iteritems():
-            link = urllib.pathname2url(os.path.join(self.assets, v))
+            link = urllib.pathname2url(os.path.join(rel_assets, v))
             readme += '\n' + r'[{}]:{}'.format(k, link)
         return readme
 

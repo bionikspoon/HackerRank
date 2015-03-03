@@ -1,5 +1,6 @@
 # coding=utf-8
 import hashlib
+import os
 
 import requests
 
@@ -8,16 +9,17 @@ class TexHandler(object):
     api = 'http://chart.apis.google.com/chart'
 
     def __init__(self, assets='../test_assets/'):
-        self.assets = assets
+        self.assets = os.path.realpath(assets)
 
     def get(self, tex):
         params = {'cht': 'tx', 'chs': 20, 'chl': tex}
         hash_id = hashlib.md5(tex).hexdigest()
-        file_name = '{}{}.{}'.format(self.assets, hash_id, 'png')
+        file_name = '{}.{}'.format(hash_id, 'png')
+        file_path = os.path.join(self.assets, file_name)
         response = requests.get(self.api, params=params)
-        with open(file_name, 'wb') as f:
+        with open(file_path, 'wb') as f:
             f.write(response.content)
-        return '{}.{}'.format(hash_id, 'png')
+        return file_name
 
 
 if __name__ == "__main__":

@@ -10,18 +10,24 @@ import mock
 import nose.tools as test
 import HackerRankSetup.TexHandler as HRTexHandler
 
+root_directory = os.path.realpath(os.path.expanduser('~/code/HackerRank'))
+
 
 class TestTexHandler(unittest.TestCase):
+    test_assets = lambda *x: os.path.realpath(
+        os.path.join(root_directory, 'HackerRankSetup/tests/test_assets',
+                     x[-1]))
+
     temp_dir = None
-    tex_response = cPickle.load(
-        open('./tests/test_assets/tex_response.p', 'rb'))
+    tex_response = cPickle.load(open(test_assets('tex_response.p'), 'rb'))
     sample_tex = '$B_1, B_2, \cdots, B_M$'
 
     @classmethod
     def setUpClass(cls):
-        tempfile.tempdir = './tests/.tmp/'
+        tempfile.tempdir = os.path.join(root_directory,
+                                        'HackerRankSetup/tests/.tmp')
         cls.temp_dir = tempfile.mkdtemp()
-        cls.temp_assets = cls.temp_dir + '/test_assets/'
+        cls.temp_assets = os.path.join(cls.temp_dir, 'test_assets')
         os.mkdir(cls.temp_assets)
 
     @classmethod
@@ -45,15 +51,19 @@ class TestTexHandler(unittest.TestCase):
         test.assert_equals(self.mock_requests, HRTexHandler.requests)
 
     def test_texhandler_initializes_properly(self):
-        test.assert_equals(self.tex.assets, self.temp_assets)
+        actual = os.path.realpath(self.tex.assets)
+        expected = os.path.realpath(self.temp_assets)
+        test.assert_equals(actual, expected)
+
+        test.assert_equal(self.tex.assets, self.temp_assets)
 
     def test_get_returns_name_of_file(self):
         test.assert_equals(self.tex.get(self.sample_tex),
                            '931a66e3d5b402ced398785c46df78e4.png')
 
     def test_accurately_renders_png(self):
-        actual = self.temp_assets + self.tex.get(self.sample_tex)
-        expected = './tests/test_assets/931a66e3d5b402ced398785c46df78e4.png'
+        actual = os.path.join(self.temp_assets,self.tex.get(self.sample_tex))
+        expected = self.test_assets('931a66e3d5b402ced398785c46df78e4.png')
         test.assert_true(filecmp.cmp(actual, expected))
 
 

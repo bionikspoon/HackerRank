@@ -2,13 +2,17 @@
 import ConfigParser
 
 import os
+import HackerRankSetup.HackerRankReadme
 
 
 config = ConfigParser.SafeConfigParser()
 config.read('config.cfg')
 
-project = os.path.abspath(config.get('HackerRank', 'Root'))
-workspace = os.path.relpath(config.get('HackerRank', 'Workspace'), project)
-assets = os.path.relpath(config.get('HackerRank', 'Assets'), project)
+root = os.path.realpath(os.path.expanduser(config.get('HackerRank', 'Root')))
 
-print project, workspace, assets
+workspace = os.path.realpath(os.path.expanduser(config.get('HackerRank', 'Workspace')))
+assets = os.path.realpath(os.path.expanduser(config.get('HackerRank', 'Assets')))
+
+url = 'https://www.hackerrank.com/challenges/solve-me-first'
+
+print HackerRankSetup.HackerRankReadme.HackerRankReadme(url, root=root, workspace=workspace, assets=assets).run()

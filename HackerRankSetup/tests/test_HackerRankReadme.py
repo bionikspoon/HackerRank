@@ -11,10 +11,13 @@ import mock
 import nose.tools as test
 import HackerRankSetup.HackerRankReadme as HRReadme
 
+root_directory = os.path.realpath(os.path.expanduser('~/code/HackerRank'))
+
 
 class TestHackerRankReadme(unittest.TestCase):
-    test_assets = lambda *x: os.path.join(
-        os.path.realpath('./tests/test_assets'), x[-1])
+    test_assets = lambda *x: os.path.realpath(
+        os.path.join(root_directory, 'HackerRankSetup/tests/test_assets',
+                     x[-1]))
 
     with open(test_assets('hackerrank_response.p'), 'rb') as response:
         hackerrank_response = cPickle.load(response)
@@ -27,9 +30,10 @@ class TestHackerRankReadme(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        tempfile.tempdir = os.path.realpath('./tests/.tmp')
+        tempfile.tempdir = os.path.realpath(
+            os.path.join(root_directory, 'HackerRankSetup/tests/.tmp'))
         cls._temp_dir = tempfile.mkdtemp()
-        cls.assets = os.path.relpath('../assets/', cls.root)
+        cls.assets = os.path.realpath(os.path.join(root_directory, 'assets'))
 
     @classmethod
     def tearDownClass(cls):
