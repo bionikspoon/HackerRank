@@ -1,98 +1,37 @@
-import cStringIO as StringIO
-from pprint import pprint
-import string
-import unittest
+# coding=utf-8
 import sys
-import random
+from cStringIO import StringIO
 
-import nose.tools as test
-from unittest2.test.support import captured_stdout
+import pytest
 
 import solution
 
 
 cases = []
 case0_in = """
-6
-1 4 3 5 6 2
+7
+1 3 9 8 2 7 5
 """
 
 case0_out = """
-1 4 3 5 6 2
-1 3 4 5 6 2
-1 3 4 5 6 2
-1 3 4 5 6 2
-1 2 3 4 5 6
+1 3 2 5 9 7 8
+1 2 3 5 9 7 8
+1 2 3 5 7 8 9
 """
-case1_in = """
-4
-4 3 2 1
-"""
-
-case1_out = """
-4 3 2 1
-3 4 3 2
-2 3 4 3
-1 2 3 4
-"""
-cases.append((case1_in, case1_out))
-
 cases.append((case0_in, case0_out))
 
 
-class TestSolutionModule(object):
-    def __init__(self):
-        global cases
-        self.cases = cases
-        solution.input = raw_input
-
-    def main_with_input(self, case_input):
-        case_input = StringIO.StringIO(case_input)
-        sys.stdin = case_input
-        with captured_stdout() as result:
-            solution.main()
-        sys.stdin = sys.__stdin__
-        result = result.getvalue().strip()
-        self.print_format(result, 'ACTUAL')
-        return result
-
-    def check_case(self, case_input, expected):
-
-        actual = self.main_with_input(case_input)
-        try:
-            test.assert_equal(actual.split("\n"), expected.split("\n"))
-            test.assert_equal(actual, expected)
-        except:
-            self.print_format(expected, 'EXPECTED')
-            raise
-
-    def test_cases(self):
-        for (_in, _out) in self.cases:
-            yield self.check_case, _in.strip(), _out.strip()
-
-    @test.timed(5)
-    def test_performance(self):
-        n = random.randint(1 ** 3, 1 ** 3)
-        an = [str(random.randint(-1 * 1 ** 4, 1 ** 4)) for _ in xrange(n)]
-        test_input = "{:d}\n{}".format(n, ' '.join(an))
-
-        print test_input
-        test.assert_is_not_none(self.main_with_input(test_input))
-
-    @staticmethod
-    def print_format(text, tag='', width=70):
-        if tag == 'ACTUAL':
-            print '\n'
-        print '{:><{}}'.format(tag, width)
-        print(text)
-        print '{:<>{}}'.format(tag, width)
+@pytest.fixture(params=cases)
+def case(request):
+    return request.param
 
 
-class TestSolutionUnit(unittest.TestCase):
-    @test.nottest
-    def test_something(self):
-        test.assert_equal(False, False)
+# noinspection PyShadowingNames
+def test_cases(case, capsys):
+    actual, expected = map(str.lstrip, case)
+    sys.stdin = StringIO(actual)
+    solution.main()
+    out, _ = capsys.readouterr()
+    sys.stdin = sys.__stdin__
 
-
-if __name__ == '__main__':
-    unittest.main()
+    assert out == expected

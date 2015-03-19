@@ -9,15 +9,14 @@ import solution
 
 cases = []
 case0_in = """
-5
-2 4 6 8 3
+2
+2 3
+3 7
 """
 
 case0_out = """
-2 4 6 8 8
-2 4 6 6 8
-2 4 4 6 8
-2 3 4 6 8
+5
+10
 """
 cases.append((case0_in, case0_out))
 
